@@ -26,14 +26,15 @@ export default function Home() {
       });
 
       if (!response.ok) {
-        throw new Error('Conversion failed');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Conversion failed');
       }
 
       const result = await response.json();
       setConversionResult(result);
     } catch (error) {
       console.error('Error:', error);
-      setConversionResult({ error: 'Conversion failed' });
+      setConversionResult({ error: error.message });
     }
   };
 

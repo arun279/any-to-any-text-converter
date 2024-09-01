@@ -2,7 +2,13 @@ import { useState, useRef } from 'react';
 
 export default function FileUpload({ onFileSelect }) {
   const [dragActive, setDragActive] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
   const inputRef = useRef(null);
+
+  const handleFileSelect = (file) => {
+    setSelectedFile(file);
+    onFileSelect(file);
+  };
 
   const handleDrag = (e) => {
     e.preventDefault();
@@ -19,14 +25,14 @@ export default function FileUpload({ onFileSelect }) {
     e.stopPropagation();
     setDragActive(false);
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      onFileSelect(e.dataTransfer.files[0]);
+      handleFileSelect(e.dataTransfer.files[0]);
     }
   };
 
   const handleChange = (e) => {
     e.preventDefault();
     if (e.target.files && e.target.files[0]) {
-      onFileSelect(e.target.files[0]);
+      handleFileSelect(e.target.files[0]);
     }
   };
 
@@ -47,9 +53,13 @@ export default function FileUpload({ onFileSelect }) {
         onChange={handleChange}
         accept=".epub"
       />
-      <p>Drag and drop your EPUB file here, or click to select a file</p>
+      {selectedFile ? (
+        <p className="mb-4">Selected file: {selectedFile.name}</p>
+      ) : (
+        <p className="mb-4">Drag and drop your EPUB file here, or click to select a file</p>
+      )}
       <button
-        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
         onClick={() => inputRef.current.click()}
       >
         Select File
