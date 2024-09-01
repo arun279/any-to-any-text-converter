@@ -1,4 +1,4 @@
-import { convertEpubToTxt } from '@/lib/convertEpubToTxt';
+const { convertEpubToTxt } = require('../../src/lib/convertEpubToTxt');
 
 jest.mock('epub', () => {
   return jest.fn().mockImplementation(() => ({

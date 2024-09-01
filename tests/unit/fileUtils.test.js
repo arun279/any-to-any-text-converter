@@ -1,6 +1,6 @@
-import { ensureDirectoryExists, generateUniqueFilename, cleanupTempFiles } from '@/lib/fileUtils';
-import fs from 'fs';
-import path from 'path';
+const { ensureDirectoryExists, generateUniqueFilename, cleanupTempFiles } = require('../../src/lib/fileUtils');
+const fs = require('fs');
+const path = require('path');
 
 jest.mock('fs');
 jest.mock('path');
@@ -15,6 +15,7 @@ describe('fileUtils', () => {
 
     it('should not create directory if it already exists', () => {
       fs.existsSync.mockReturnValue(true);
+      fs.mkdirSync.mockClear();
       ensureDirectoryExists('/test/dir');
       expect(fs.mkdirSync).not.toHaveBeenCalled();
     });
